@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { Button, buttonVariants } from './ui/button'
 import { UserButton } from '@clerk/nextjs'
 import { ToggleThemeButton } from './ToggleThemeButton'
-import { SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
 import { Menu } from 'lucide-react'
 
@@ -41,9 +41,10 @@ export const MobileNavbar = () => {
 						<Logo />
 						<div className='flex flex-col justify-between h-full'>
 							<ul className='flex gap-4 flex-col items-start font-bold font-mono'>
-								{LINKS.map((link) => (
+								{LINKS.map((link, index) => (
 									<LinkItem
 										{...link}
+										key={index}
 										clickCallback={() => setIsOpen((lastState) => !lastState)}
 									/>
 								))}
@@ -67,8 +68,8 @@ export const DesktopNavbar = () => {
 					<Logo />
 				</div>
 				<ul className='flex gap-4 items-center font-bold font-mono'>
-					{LINKS.map((link) => (
-						<LinkItem {...link} />
+					{LINKS.map((link, index) => (
+						<LinkItem {...link} key={index} />
 					))}
 					<ToggleThemeButton />
 					<UserButton afterSignOutUrl='/sign-in' />
@@ -102,8 +103,7 @@ function LinkItem({
 					isCurrent &&
 						'text-foreground  after:content-[""]  after:absolute after:-bottom-0.5 after:w-full after:h-0.5 after:bg-foreground after:left-0'
 				)}
-				onClick={clickCallback && clickCallback}
-				>
+				onClick={clickCallback && clickCallback}>
 				{label}
 			</Link>
 		</li>
