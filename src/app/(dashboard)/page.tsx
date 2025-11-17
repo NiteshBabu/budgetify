@@ -2,10 +2,9 @@ import { Button } from '@/components/ui/button'
 import { prisma } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 import { MinusIcon, PlusIcon } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import CreateTransactionsPopup from './_components/CreateTransactionsPopup'
+import History from './_components/History'
 import Insight from './_components/Insight'
 
 export default async function Home() {
@@ -22,10 +21,10 @@ export default async function Home() {
 	if (!userSettings) redirect('/wizard')
 
 	return (
-		<div className='container mx-auto'>
+		<div className='container mx-auto grid gap-5'>
 			<div className='flex flex-col md:flex-row  justify-between items-center py-5 gap-5'>
 				<h1 className='text-2xl md:text-4xl font-bold text-foreground'>
-					Hello {user.firstName}!
+					Hello, {user.firstName}!
 				</h1>
 
 				<div className='flex gap-4'>
@@ -50,6 +49,7 @@ export default async function Home() {
 				</div>
 			</div>
 			<Insight userSettings={userSettings} />
+			<History userSettings={userSettings} />
 		</div>
 	)
 }
