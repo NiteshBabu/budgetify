@@ -5,6 +5,8 @@ import { MinusIcon, PlusIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import CreateTransactionsPopup from './_components/CreateTransactionsPopup'
+import Insight from './_components/Insight'
 
 export default async function Home() {
 	const user = await currentUser()
@@ -21,22 +23,33 @@ export default async function Home() {
 
 	return (
 		<div className='container mx-auto'>
-			<div className='flex justify-between items-center py-5'>
-				<h1 className='text-2xl font-bold text-foreground'>
-					Hello {user.firstName}
+			<div className='flex flex-col md:flex-row  justify-between items-center py-5 gap-5'>
+				<h1 className='text-2xl md:text-4xl font-bold text-foreground'>
+					Hello {user.firstName}!
 				</h1>
 
 				<div className='flex gap-4'>
-					<Button className='bg-emerald-500 text-white hover:bg-emerald-700 cursor-pointer'>
-						<PlusIcon />
-						New Income
-					</Button>
-					<Button className='bg-red-500 text-white hover:bg-red-700 cursor-pointer'>
-						<MinusIcon />
-						New Expense
-					</Button>
+					<CreateTransactionsPopup
+						trigger={
+							<Button className='bg-emerald-500 text-white hover:bg-emerald-700 cursor-pointer'>
+								<PlusIcon />
+								New Income
+							</Button>
+						}
+						type='income'
+					/>
+					<CreateTransactionsPopup
+						trigger={
+							<Button className='bg-red-500 text-white hover:bg-red-700 cursor-pointer'>
+								<MinusIcon />
+								New Expense
+							</Button>
+						}
+						type='expense'
+					/>
 				</div>
 			</div>
+			<Insight userSettings={userSettings} />
 		</div>
 	)
 }

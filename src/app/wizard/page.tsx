@@ -42,13 +42,17 @@ export default async function Page({
 					</CardDescription>
 				</CardHeader>
 				<CardContent className='w-full'>
-					<CurrencyCombobox  />
+					<CurrencyCombobox />
 				</CardContent>
 			</Card>
 			<Separator />
-			<Button className='w-full flex items-center group' asChild>
-				<Link href='/'>I'm done, please take me to the dashboard.
-				<ArrowRight className='group-hover:translate-x-1 duration-300 ease-in-out'/>
+			<Button
+				variant='outline'
+				className='w-full flex items-center group'
+				asChild>
+				<Link href='/'>
+					I'm done, please take me to the dashboard.
+					<ArrowRight className='group-hover:translate-x-1 duration-300 ease-in-out' />
 				</Link>
 			</Button>
 		</div>
