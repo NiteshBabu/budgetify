@@ -1,8 +1,6 @@
 'use server'
 
 import { prisma } from '@/lib/prisma'
-import { TransactionType } from '@/lib/types'
-import { DateToUTCDate } from '@/lib/utils'
 import {
 	CreateTransactionSchema,
 	CreateTransactionSchemaType,
@@ -22,7 +20,7 @@ export async function CreateTransaction(form: CreateTransactionSchemaType) {
 
 	const data = parsedBody.data
 
-	const category = prisma.category.findFirst({
+	const category = await prisma.category.findFirst({
 		where: {
 			userId: user.id,
 			name: data.category,
@@ -45,7 +43,7 @@ export async function CreateTransaction(form: CreateTransactionSchemaType) {
 			data: {
 				userId: user.id,
 				...data,
-				categoryIcon: data.category,
+				categoryIcon: category.icon,
 			},
 		}),
 

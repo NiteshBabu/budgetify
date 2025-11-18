@@ -28,7 +28,6 @@ export async function GET(req: Response) {
 		month,
 	})
 
-	console.log(timeframe, year, month)
 	if (!queryParams.success) {
 		return Response.json(queryParams.error, {
 			status: 400,

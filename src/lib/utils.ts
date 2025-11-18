@@ -1,6 +1,6 @@
-import { CURRENCIES } from '@/components/CurrencyCombobox'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { CURRENCIES } from './constants'
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))

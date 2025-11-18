@@ -21,35 +21,41 @@ export default async function Home() {
 	if (!userSettings) redirect('/wizard')
 
 	return (
-		<div className='container mx-auto grid gap-5'>
-			<div className='flex flex-col md:flex-row  justify-between items-center py-5 gap-5'>
-				<h1 className='text-2xl md:text-4xl font-bold text-foreground'>
-					Hello, {user.firstName}!
-				</h1>
-
-				<div className='flex gap-4'>
-					<CreateTransactionsPopup
-						trigger={
-							<Button className='bg-emerald-500 text-white hover:bg-emerald-700 cursor-pointer'>
-								<PlusIcon />
-								New Income
-							</Button>
-						}
-						type='income'
-					/>
-					<CreateTransactionsPopup
-						trigger={
-							<Button className='bg-red-500 text-white hover:bg-red-700 cursor-pointer'>
-								<MinusIcon />
-								New Expense
-							</Button>
-						}
-						type='expense'
-					/>
+		<div className='grid gap-5'>
+			<div className='border-b bg-card py-10'>
+				<div className='container mx-auto flex flex-col md:flex-row  justify-between md:items-center gap-5'>
+					<div className=''>
+						<h1 className='text-3xl font-mono md:text-5xl font-bold text-foreground'>
+							Hello, <span className='text-colorful'>{user.firstName}!</span>
+						</h1>
+						<p className='text-muted-foreground'>Welcome to Budgetify!</p>
+					</div>
+					<div className='flex gap-4 ml-auto'>
+						<CreateTransactionsPopup
+							trigger={
+								<Button className='bg-emerald-500 text-white hover:bg-emerald-700 cursor-pointer'>
+									<PlusIcon />
+									New Income
+								</Button>
+							}
+							type='income'
+						/>
+						<CreateTransactionsPopup
+							trigger={
+								<Button className='bg-red-500 text-white hover:bg-red-700 cursor-pointer'>
+									<MinusIcon />
+									New Expense
+								</Button>
+							}
+							type='expense'
+						/>
+					</div>
 				</div>
 			</div>
-			<Insight userSettings={userSettings} />
-			<History userSettings={userSettings} />
+			<div className='container mx-auto grid gap-8'>
+				<Insight userSettings={userSettings} />
+				<History userSettings={userSettings} />
+			</div>
 		</div>
 	)
 }

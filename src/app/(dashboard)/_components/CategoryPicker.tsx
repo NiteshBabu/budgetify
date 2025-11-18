@@ -13,12 +13,12 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover'
 import { TransactionType } from '@/lib/types'
+import { cn } from '@/lib/utils'
 import { Category } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
-import React, { useEffect, useState } from 'react'
-import CreateCategoryPopup from './CreateCategoryPopup'
 import { Check, ChevronDown } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { useEffect, useState } from 'react'
+import CreateCategoryPopup from './CreateCategoryPopup'
 
 interface Props {
 	type: TransactionType
@@ -27,7 +27,7 @@ interface Props {
 
 const CategoryPicker = ({ type, onChange }: Props) => {
 	const [open, setOpen] = useState(false)
-	const [category, setCategory] = useState<string>('')
+	const [category, setCategory] = useState('')
 
 	useEffect(() => {
 		if (!category) return
@@ -78,7 +78,9 @@ const CategoryPicker = ({ type, onChange }: Props) => {
 										setOpen((lastState) => !lastState)
 									}}>
 									<CategoryRow category={cat} />
-									<Check className={cn(category !== cat.name && 'hidden')} />
+									<Check
+										className={cn(category !== cat.name && 'hidden')}
+									/>
 								</CommandItem>
 							))}
 						</CommandList>

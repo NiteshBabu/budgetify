@@ -1,6 +1,5 @@
 import { prisma } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
-import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import z from 'zod'
 
@@ -22,19 +21,18 @@ export async function GET(request: Request) {
 			status: 400,
 		})
 	}
-	
+
 	const type = queryParams.data
-	
-	
+
 	const categories = await prisma.category.findMany({
 		where: {
 			userId: user.id,
 			...(type && { type }),
 		},
-		orderBy : {
-			name : "asc"
-		}
+		orderBy: {
+			name: 'asc',
+		},
 	})
-	console.log(categories)
 	return Response.json(categories)
 }
+

@@ -1,21 +1,17 @@
 'use client'
 
 import { GetBalanceStatsResponseType } from '@/app/api/stats/balance/route'
+import { GetCategoryStatsResponseType } from '@/app/api/stats/category/route'
 import SkeletonWrapper from '@/components/SkeletonWrapper'
 import { Card } from '@/components/ui/card'
-import { DateRangePicker } from '@/components/ui/date-range-picker'
-import { MAX_DATE_RANGE } from '@/lib/constants'
+import { Progress } from '@/components/ui/progress'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn, DateToUTCDate, GetCurrencyFormatter } from '@/lib/utils'
 import { UserSettings } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
-import { differenceInDays, startOfMonth } from 'date-fns'
 import { TrendingDownIcon, TrendingUpIcon, WalletIcon } from 'lucide-react'
-import { ReactNode, useCallback, useMemo, useState } from 'react'
-import { toast } from 'sonner'
+import { ReactNode, useCallback, useMemo } from 'react'
 import CountUp from 'react-countup'
-import { GetCategoryStatsResponseType } from '@/app/api/stats/category/route'
-import { Progress } from '@/components/ui/progress'
-import { ScrollArea } from '@/components/ui/scroll-area'
 
 type Props = {
 	from: Date
@@ -41,19 +37,19 @@ function Stats({ userSettings, from, to }: Props) {
 	return (
 		<div className='grid gap-5'>
 			<div className='flex items-center gap-5 md:flex-row flex-col'>
-				<SkeletonWrapper isLoading={statsQuery.isFetching}>
+				<SkeletonWrapper isLoading={statsQuery.isFetching} fullWidth>
 					<StatsCard formatter={formatter} data={income}>
 						<p className='font-bold text-xl font-mono'>Income</p>
 						<TrendingUpIcon className='text-emerald-500 bg-emerald-500/10 h-13 w-13 rounded-lg p-2' />
 					</StatsCard>
 				</SkeletonWrapper>
-				<SkeletonWrapper isLoading={statsQuery.isFetching}>
+				<SkeletonWrapper isLoading={statsQuery.isFetching} fullWidth>
 					<StatsCard formatter={formatter} data={expense}>
 						<p className='font-bold text-xl font-mono'>Expense</p>
 						<TrendingDownIcon className='text-red-500 bg-red-500/10 h-13 w-13 rounded-lg p-2 ' />
 					</StatsCard>
 				</SkeletonWrapper>
-				<SkeletonWrapper isLoading={statsQuery.isFetching}>
+				<SkeletonWrapper isLoading={statsQuery.isFetching} fullWidth>
 					<StatsCard formatter={formatter} data={income - expense}>
 						<h3 className='font-bold text-xl font-mono'>Balance</h3>
 						<WalletIcon className='text-indigo-500 bg-indigo-500/10 h-13 w-13 rounded-lg p-2' />
@@ -126,7 +122,6 @@ const CategoryStats = ({
 		},
 		{ income: { items: [], total: 0 }, expense: { items: [], total: 0 } }
 	)
-	console.log(filteredData)
 
 	const formatFn = useCallback(
 		(data: number) => formatter.format(data),
@@ -136,38 +131,48 @@ const CategoryStats = ({
 		<div className='flex gap-5 md:flex-row flex-col'>
 			{filteredData &&
 				Object.keys(filteredData).map((key) => (
-					<SkeletonWrapper isLoading={statsQuery.isFetching}>
-						<Card className='w-full p-4'>
-							<h3 className='font-mono font-bold text-xl'>{key} By Category</h3>
+					<Card className='w-full p-4' key={key}>
+						<h3 className='font-mono font-bold text-xl'>{key} By Category</h3>
+						{filteredData[key].items.length <= 0 ? (
+							<p className='text-center my-[15%] font-bold text-xl'>Nothing to show here!</p>
+						) : (
 							<ScrollArea className='h-80 w-full p-5'>
-								{filteredData[key].items.map((item) => (
-									<div className='grid gap-1 mb-4'>
-										<div className='flex items-center justify-between gap-4 text-xs font-mono font-bold'>
-											<p>
-												{item.category} (
-												{((item._sum.amount * 100) / filteredData[key].total).toFixed()}%)
-											</p>
-											<CountUp
-												preserveValue
-												redraw={false}
-												end={item._sum.amount!}
-												formattingFn={formatFn}
-												className='text-base'
+								<SkeletonWrapper isLoading={statsQuery.isFetching} fullWidth>
+									{filteredData[key].items.map((item) => (
+										<div className='grid gap-1 mb-4'>
+											<div className='flex items-center justify-between gap-4 text-xs font-mono font-bold'>
+												<p>
+													{item.category} (
+													{(
+														(item._sum.amount * 100) /
+														filteredData[key].total
+													).toFixed()}
+													%)
+												</p>
+												<CountUp
+													preserveValue
+													redraw={false}
+													end={item._sum.amount!}
+													formattingFn={formatFn}
+													className='text-base'
+												/>
+											</div>
+											<Progress
+												title={item.category}
+												className='h-4'
+												indicatorClassName={cn(
+													key === 'income' ? 'bg-emerald-500' : 'bg-red-500'
+												)}
+												value={
+													(item._sum.amount * 100) / filteredData[key].total
+												}
 											/>
 										</div>
-										<Progress
-											title={item.category}
-											className='h-4'
-											indicatorClassName={cn(
-												key === 'income' ? 'bg-emerald-500' : 'bg-red-500'
-											)}
-											value={(item._sum.amount * 100) / filteredData[key].total}
-										/>
-									</div>
-								))}
+									))}
+								</SkeletonWrapper>
 							</ScrollArea>
-						</Card>
-					</SkeletonWrapper>
+						)}
+					</Card>
 				))}
 		</div>
 	)

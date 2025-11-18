@@ -1,19 +1,19 @@
 'use client'
 import { cn } from '@/lib/utils'
-import Logo from './Logo'
+import { UserButton } from '@clerk/nextjs'
+import { Menu } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Button, buttonVariants } from './ui/button'
-import { UserButton } from '@clerk/nextjs'
-import { ToggleThemeButton } from './ToggleThemeButton'
 import { useState } from 'react'
+import Logo from './Logo'
+import { ToggleThemeButton } from './ToggleThemeButton'
+import { Button, buttonVariants } from './ui/button'
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
-import { Menu } from 'lucide-react'
 
 const LINKS = [
 	{ label: 'Dashboard', href: '/' },
-	{ label: 'Expense', href: '/expense' },
-	{ label: 'Income', href: '/income' },
+	{ label: 'Transactions', href: '/transactions' },
+	{ label: 'Manage', href: '/manage' },
 ]
 export const Navbar = () => {
 	return (
@@ -30,15 +30,20 @@ export const MobileNavbar = () => {
 		<div className='md:hidden border-separate bg-background border-b'>
 			<nav className=''>
 				<Sheet open={isOpen} onOpenChange={setIsOpen}>
-					<SheetTrigger asChild>
-						<Button size='icon'>
-							<Menu />
-						</Button>
-					</SheetTrigger>
-					<SheetContent
-						className='w-[400px] sm:[540px] flex flex-col'
-						side='left'>
+					<div className='flex items-center justify-between py-3'>
+						<SheetTrigger asChild>
+							<Button size={'icon'} variant='outline'>
+								<Menu />
+							</Button>
+						</SheetTrigger>
 						<Logo />
+					</div>
+					<SheetContent
+						className='w-[400px] sm:[540px] flex flex-col py-4'
+						side='left'>
+						<div className='flex border-b pb-4 px-3'>
+							<Logo />
+						</div>
 						<div className='flex flex-col justify-between h-full'>
 							<ul className='flex gap-4 flex-col items-start font-bold font-mono'>
 								{LINKS.map((link, index) => (
@@ -62,12 +67,12 @@ export const MobileNavbar = () => {
 }
 export const DesktopNavbar = () => {
 	return (
-		<div className='hidden md:block border-separate bg-background border-b'>
-			<nav className='container flex gap-4 justify-between items-center'>
-				<div className='logo'>
+		<div className='hidden md:block border-separate bg-background '>
+			<nav className='flex gap-4 justify-between items-center'>
+				<div className='logo py-4'>
 					<Logo />
 				</div>
-				<ul className='flex gap-4 items-center font-bold font-mono'>
+				<ul className='flex gap-5 items-center font-bold font-mono'>
 					{LINKS.map((link, index) => (
 						<LinkItem {...link} key={index} />
 					))}
@@ -99,9 +104,9 @@ function LinkItem({
 					buttonVariants({
 						variant: 'ghost',
 					}),
-					'w-full justify-start text-lg text-muted-foreground hover:text-foreground relative',
+					'w-full justify-start px-1 text-lg text-muted-foreground hover:text-foreground relative',
 					isCurrent &&
-						'text-foreground  after:content-[""]  after:absolute after:-bottom-0.5 after:w-full after:h-0.5 after:bg-foreground after:left-0'
+						'text-foreground  after:content-[""]  after:absolute after:-bottom-5 after:w-full after:h-0.5 after:bg-emerald-500 after:left-0'
 				)}
 				onClick={clickCallback && clickCallback}>
 				{label}

@@ -11,9 +11,7 @@ import {
 import { TransactionType } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
-import { useCallback, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { Button } from '@/components/ui/button'
 import {
 	Form,
 	FormControl,
@@ -23,17 +21,18 @@ import {
 	FormLabel,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import CategoryPicker from './CategoryPicker'
 import {
 	CreateCategorySchema,
 	CreateCategorySchemaType,
 } from '@/schema/category'
-import { Button } from '@/components/ui/button'
-import { LoaderCircle, PlusIcon, PlusSquare } from 'lucide-react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { CreateCategory } from '../_actions/categories'
-import { toast } from 'sonner'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Category } from '@prisma/client'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { LoaderCircle, PlusIcon, PlusSquare } from 'lucide-react'
+import { useCallback, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { CreateCategory } from '../_actions/categories'
 
 interface Props {
 	type: TransactionType
@@ -59,13 +58,16 @@ const CreateCategoryPopup = ({ type }: Props) => {
 				id: 'create-category',
 			})
 
-			await queryClient.invalidateQueries({ queryKey: ['categories'] })
+			await queryClient.invalidateQueries({ queryKey: ['manage', 'category'] })
 			setOpen((lastState) => !lastState)
 		},
 		onError: (e) => {
-			toast.error("Oops, something went wrong! \n Categories name should be unique.", {
-				id: 'create-category',
-			})
+			toast.error(
+				'Oops, something went wrong! \n Categories name should be unique.',
+				{
+					id: 'create-category',
+				}
+			)
 		},
 	})
 
@@ -83,19 +85,20 @@ const CreateCategoryPopup = ({ type }: Props) => {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button className='flex items-center justify-center'>
+				<Button variant='outline' className='flex items-center justify-center cursor-pointer'>
 					<PlusSquare className='h-5 w-5' />
 					Create New
 				</Button>
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>
-						Create a new{' '}
+					<DialogTitle className='flex gap-1'>
+
+						Create a new 
 						<span
 							className={cn(
 								type === 'income' ? 'text-emerald-500' : 'text-red-500'
-							)}>
+							, "capitalize")}>
 							{type}
 						</span>
 						category

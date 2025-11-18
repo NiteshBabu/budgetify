@@ -1,9 +1,9 @@
 'use client'
 
-import * as React from 'react'
 import { Check, ChevronsUpDown } from 'lucide-react'
+import * as React from 'react'
 
-import { cn } from '@/lib/utils'
+import { UpdateUserCurrency } from '@/app/wizard/_actions/userSettings'
 import { Button } from '@/components/ui/button'
 import {
 	Command,
@@ -18,39 +18,13 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import SkeletonWrapper from './SkeletonWrapper'
+import { CURRENCIES } from '@/lib/constants'
+import { cn } from '@/lib/utils'
 import { UserSettings } from '@prisma/client'
-import { UpdateUserCurrency } from '@/app/wizard/_actions/userSettings'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
+import SkeletonWrapper from './SkeletonWrapper'
 
-export const CURRENCIES = [
-	{
-		code: 'INR',
-		label: '₹ Indian Rupees',
-		locale: 'en-IN',
-	},
-	{
-		code: 'GBP',
-		label: '£ Pound',
-		locale: 'en-GB',
-	},
-	{
-		code: 'USD',
-		label: '$ Dollar',
-		locale: 'en-US',
-	},
-	{
-		code: 'EUR',
-		label: '€ Euro',
-		locale: 'de-DE',
-	},
-	{
-		code: 'JPY',
-		label: '¥ Yen',
-		locale: 'ja-JP',
-	},
-]
 
 export function CurrencyCombobox() {
 	const [open, setOpen] = React.useState(false)

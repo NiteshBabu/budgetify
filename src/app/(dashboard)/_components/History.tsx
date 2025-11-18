@@ -36,15 +36,15 @@ function History({ userSettings }: Props) {
 	)
 
 	const historyDataQuery = useQuery({
-		queryKey: ['dashboard', 'history', timeframe],
+		queryKey: ['dashboard', 'history', timeframe, period],
 		queryFn: () =>
 			fetch(
 				`/api/history-data?timeframe=${timeframe}&month=${period.month}&year=${period.year}`
 			).then((resp) => resp.json()),
 	})
-	console.log(historyDataQuery.data)
 	return (
-		<div className='grid'>
+		<div className='grid gap-5'>
+			<h2 className='text-2xl md:text-3xl font-bold font-mono'>History</h2>
 			<Card>
 				<CardHeader>
 					<CardTitle className='flex md:flex-row flex-col gap-4 justify-between'>

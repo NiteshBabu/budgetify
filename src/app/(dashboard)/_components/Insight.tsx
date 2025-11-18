@@ -20,7 +20,7 @@ function Insight({ userSettings }: Prop) {
 	return (
 		<div className='grid gap-5 '>
 			<div className='flex justify-between items-center '>
-				<h2 className='text-2xl md:text-3xl font-bold'>Insight</h2>
+				<h2 className='text-2xl md:text-3xl font-bold font-mono'>Insight</h2>
 				<DateRangePicker
 					initialDateFrom={dateRange.from}
 					initialDateTo={dateRange.to}

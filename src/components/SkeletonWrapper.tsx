@@ -1,5 +1,5 @@
-import { Skeleton } from './ui/skeleton'
 import { cn } from '@/lib/utils'
+import { Skeleton } from './ui/skeleton'
 
 const SkeletonWrapper = ({
 	children,
@@ -13,7 +13,7 @@ const SkeletonWrapper = ({
 	if (!isLoading) return children
 	return (
 		<Skeleton className={cn(fullWidth && 'w-full')}>
-			<div className='opacity-0'>{children}</div>
+			<div className='opacity-0 pointer-events-none'>{children}</div>
 		</Skeleton>
 	)
 }

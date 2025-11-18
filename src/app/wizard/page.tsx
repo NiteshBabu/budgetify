@@ -23,7 +23,7 @@ export default async function Page({
 	if (!user) redirect('/sign-in')
 
 	return (
-		<div className='container max-w-2xl flex flex-col justify-between items-center gap-4'>
+		<div className='container flex flex-col justify-between items-center gap-4'>
 			<h1 className='text-3xl text-center'>
 				Welcome, <span className='font-bold ml-1'>{user.firstName}!</span>
 			</h1>

@@ -1,4 +1,6 @@
 'use client'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
 import {
 	Dialog,
 	DialogContent,
@@ -7,15 +9,6 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog'
-import { TransactionType } from '@/lib/types'
-import { cn, DateToUTCDate } from '@/lib/utils'
-import {
-	CreateTransactionSchema,
-	CreateTransactionSchemaType,
-} from '@/schema/transaction'
-import { ReactNode, useCallback, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import {
 	Form,
 	FormControl,
@@ -25,19 +18,26 @@ import {
 	FormLabel,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Calendar } from '@/components/ui/calendar'
-import CategoryPicker from './CategoryPicker'
-import { Button } from '@/components/ui/button'
-import { CalendarIcon, MinusIcon, PlusIcon } from 'lucide-react'
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover'
-import { format } from 'date-fns'
+import { TransactionType } from '@/lib/types'
+import { cn, DateToUTCDate } from '@/lib/utils'
+import {
+	CreateTransactionSchema,
+	CreateTransactionSchemaType,
+} from '@/schema/transaction'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { CreateTransaction } from '../_actions/transaction'
+import { format } from 'date-fns'
+import { CalendarIcon, MinusIcon, PlusIcon } from 'lucide-react'
+import { ReactNode, useCallback, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { CreateTransaction } from '../_actions/transaction'
+import CategoryPicker from './CategoryPicker'
 
 interface Props {
 	trigger: ReactNode
@@ -64,7 +64,7 @@ const CreateTransactionsPopup = ({ trigger, type }: Props) => {
 			})
 			form.reset()
 			queryClient.invalidateQueries({
-				queryKey: ['insight'],
+				queryKey: ['dashboard'],
 			})
 			setOpen((lastState) => !lastState)
 		},
