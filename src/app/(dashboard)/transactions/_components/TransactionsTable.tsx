@@ -173,7 +173,7 @@ function TransactionsTable({ from, to }: Props) {
 	const categoryOptions = useMemo(() => {
 		const categoryMap = new Map()
 
-		transactionsQuery.data?.forEach((transaction) => {
+		transactionsQuery.data?.forEach((transaction: TransactionHistoryRow) => {
 			categoryMap.set(transaction.category, {
 				label: `${transaction.categoryIcon}-${transaction.category}`,
 				value: transaction.category,

@@ -1,12 +1,18 @@
 /* eslint-disable max-lines */
 'use client'
 
-import React, { type FC, useState, useEffect, useRef } from 'react'
+import { cn } from '@/lib/utils'
+import {
+	CheckIcon,
+	ChevronDownIcon,
+	ChevronUpIcon,
+} from '@radix-ui/react-icons'
+import { type FC, JSX, useEffect, useRef, useState } from 'react'
 import { Button } from './button'
-import { Popover, PopoverContent, PopoverTrigger } from './popover'
 import { Calendar } from './calendar'
 import { DateInput } from './date-input'
 import { Label } from './label'
+import { Popover, PopoverContent, PopoverTrigger } from './popover'
 import {
 	Select,
 	SelectContent,
@@ -15,12 +21,6 @@ import {
 	SelectValue,
 } from './select'
 import { Switch } from './switch'
-import {
-	ChevronUpIcon,
-	ChevronDownIcon,
-	CheckIcon,
-} from '@radix-ui/react-icons'
-import { cn } from '@/lib/utils'
 
 export interface DateRangePickerProps {
 	/** Click handler for applying the updates from DateRangePicker. */

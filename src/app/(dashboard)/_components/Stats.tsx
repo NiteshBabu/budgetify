@@ -6,6 +6,7 @@ import SkeletonWrapper from '@/components/SkeletonWrapper'
 import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { TransactionType } from '@/lib/types'
 import { cn, DateToUTCDate, GetCurrencyFormatter } from '@/lib/utils'
 import { UserSettings } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
@@ -109,18 +110,21 @@ const CategoryStats = ({
 			).then((resp) => resp.json()),
 	})
 
+	const stats = statsQuery.data ?? []
+
 	const filteredData = statsQuery.data?.reduce(
 		(filtered, d) => {
-			if (d.type === 'income') {
-				filtered.income.items.push(d)
-				filtered.income.total += d._sum.amount || 0
-			} else {
-				filtered.expense.items.push(d)
-				filtered.expense.total += d._sum.amount || 0
-			}
+			const key = d.type === 'income' ? 'income' : 'expense'
+
+			filtered[key].items.push(d)
+			filtered[key].total += d._sum.amount || 0
+
 			return filtered
 		},
-		{ income: { items: [], total: 0 }, expense: { items: [], total: 0 } }
+		{
+			income: { items: [] as typeof stats, total: 0 },
+			expense: { items: [] as typeof stats, total: 0 },
+		}
 	)
 
 	const formatFn = useCallback(
@@ -133,19 +137,21 @@ const CategoryStats = ({
 				Object.keys(filteredData).map((key) => (
 					<Card className='w-full p-4' key={key}>
 						<h3 className='font-mono font-bold text-xl'>{key} By Category</h3>
-						{filteredData[key].items.length <= 0 ? (
-							<p className='text-center my-[15%] font-bold text-xl'>Nothing to show here!</p>
+						{filteredData[key as TransactionType].items.length <= 0 ? (
+							<p className='text-center my-[15%] font-bold text-xl'>
+								Nothing to show here!
+							</p>
 						) : (
 							<ScrollArea className='h-80 w-full p-5'>
 								<SkeletonWrapper isLoading={statsQuery.isFetching} fullWidth>
-									{filteredData[key].items.map((item) => (
+									{filteredData[key as TransactionType].items.map((item) => (
 										<div className='grid gap-1 mb-4'>
 											<div className='flex items-center justify-between gap-4 text-xs font-mono font-bold'>
 												<p>
 													{item.category} (
 													{(
-														(item._sum.amount * 100) /
-														filteredData[key].total
+														(item._sum.amount! * 100) /
+														filteredData[key as TransactionType].total
 													).toFixed()}
 													%)
 												</p>
@@ -164,7 +170,8 @@ const CategoryStats = ({
 													key === 'income' ? 'bg-emerald-500' : 'bg-red-500'
 												)}
 												value={
-													(item._sum.amount * 100) / filteredData[key].total
+													(item._sum.amount! * 100) /
+													filteredData[key as TransactionType].total
 												}
 											/>
 										</div>

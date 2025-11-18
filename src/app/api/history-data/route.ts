@@ -11,7 +11,7 @@ const GetHistoryDataSchema = z.object({
 	year: z.coerce.number().min(2000).max(3000),
 })
 
-export async function GET(req: Response) {
+export async function GET(req: Request) {
 	const user = await currentUser()
 
 	if (!user) redirect('/sign-in')

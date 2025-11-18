@@ -46,9 +46,10 @@ interface Props {
 
 const CreateTransactionsPopup = ({ trigger, type }: Props) => {
 	const [open, setOpen] = useState(false)
-	const form = useForm<CreateTransactionSchemaType>({
+	const form = useForm({
 		resolver: zodResolver(CreateTransactionSchema),
 		defaultValues: {
+			amount: 0,
 			type,
 			date: new Date(),
 		},
@@ -127,7 +128,8 @@ const CreateTransactionsPopup = ({ trigger, type }: Props) => {
 								<FormItem>
 									<FormLabel>Amount</FormLabel>
 									<FormControl>
-										<Input defaultValue={0} type='number' {...field} />
+										{/* @ts-ignore */}
+										<Input type='number' defaultValue={0} {...field} />
 									</FormControl>
 									<FormDescription>
 										Transaction amount (required)
@@ -162,7 +164,8 @@ const CreateTransactionsPopup = ({ trigger, type }: Props) => {
 											<PopoverTrigger asChild>
 												<FormControl>
 													<Button variant='outline'>
-														{field.value && format(field.value, 'PPP')}
+														{(field.value as Date) &&
+															format(field.value as Date, 'PPP')}
 														<CalendarIcon />
 													</Button>
 												</FormControl>
@@ -170,7 +173,7 @@ const CreateTransactionsPopup = ({ trigger, type }: Props) => {
 											<PopoverContent>
 												<Calendar
 													mode='single'
-													selected={field.value}
+													selected={field.value as Date}
 													onSelect={field.onChange}
 												/>
 											</PopoverContent>

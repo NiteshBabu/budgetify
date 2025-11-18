@@ -36,7 +36,7 @@ model Transactions{
   createdAt DateTime @default(now())
   uodatedAt DateTime @default(now())
   amount Float
-  description String
+  description String?
   date DateTime
   userId String
   type String @default("income")
