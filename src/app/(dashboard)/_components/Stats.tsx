@@ -22,7 +22,7 @@ type Props = {
 
 function Stats({ userSettings, from, to }: Props) {
 	const statsQuery = useQuery<GetBalanceStatsResponseType>({
-		queryKey: ['insight', 'stats', from, to],
+		queryKey: ['dashboard', 'insight', 'stats', from, to],
 		queryFn: () =>
 			fetch(
 				`/api/stats/balance?from=${DateToUTCDate(from)}&to=${DateToUTCDate(to)}`
@@ -40,20 +40,26 @@ function Stats({ userSettings, from, to }: Props) {
 			<div className='flex items-center gap-5 md:flex-row flex-col'>
 				<SkeletonWrapper isLoading={statsQuery.isFetching} fullWidth>
 					<StatsCard formatter={formatter} data={income}>
-						<p className='font-bold text-xl font-mono'>Income</p>
-						<TrendingUpIcon className='text-emerald-500 bg-emerald-500/10 h-13 w-13 rounded-lg p-2' />
+						<div className='flex items-center gap-3'>
+							<TrendingUpIcon className='text-emerald-500 bg-emerald-500/10 h-13 w-13 rounded-lg p-2' />
+							<h3 className='font-bold text-xl font-mono'>Income</h3>
+						</div>
 					</StatsCard>
 				</SkeletonWrapper>
 				<SkeletonWrapper isLoading={statsQuery.isFetching} fullWidth>
 					<StatsCard formatter={formatter} data={expense}>
-						<p className='font-bold text-xl font-mono'>Expense</p>
-						<TrendingDownIcon className='text-red-500 bg-red-500/10 h-13 w-13 rounded-lg p-2 ' />
+						<div className='flex items-center gap-3'>
+							<TrendingDownIcon className='text-red-500 bg-red-500/10 h-13 w-13 rounded-lg p-2 ' />
+							<h3 className='font-bold text-xl font-mono'>Expense</h3>
+						</div>
 					</StatsCard>
 				</SkeletonWrapper>
 				<SkeletonWrapper isLoading={statsQuery.isFetching} fullWidth>
 					<StatsCard formatter={formatter} data={income - expense}>
-						<h3 className='font-bold text-xl font-mono'>Balance</h3>
-						<WalletIcon className='text-indigo-500 bg-indigo-500/10 h-13 w-13 rounded-lg p-2' />
+						<div className='flex items-center gap-3'>
+							<WalletIcon className='text-indigo-500 bg-indigo-500/10 h-13 w-13 rounded-lg p-2' />
+							<h3 className='font-bold text-xl font-mono'>Balance</h3>
+						</div>
 					</StatsCard>
 				</SkeletonWrapper>
 			</div>
@@ -76,7 +82,7 @@ const StatsCard = ({
 		[formatter]
 	)
 	return (
-		<Card className='w-full p-4'>
+		<Card className='w-full p-4 md:p-5'>
 			{children}
 			<CountUp
 				preserveValue
@@ -101,7 +107,7 @@ const CategoryStats = ({
 	to: Date
 }) => {
 	const statsQuery = useQuery<GetCategoryStatsResponseType>({
-		queryKey: ['insight', 'stats', 'category', from, to],
+		queryKey: ['dashboard', 'insight', 'stats', 'category', from, to],
 		queryFn: () =>
 			fetch(
 				`/api/stats/category?from=${DateToUTCDate(from)}&to=${DateToUTCDate(
@@ -135,15 +141,15 @@ const CategoryStats = ({
 		<div className='flex gap-5 md:flex-row flex-col'>
 			{filteredData &&
 				Object.keys(filteredData).map((key) => (
-					<Card className='w-full p-4' key={key}>
-						<h3 className='font-mono font-bold text-xl'>{key} By Category</h3>
-						{filteredData[key as TransactionType].items.length <= 0 ? (
-							<p className='text-center my-[15%] font-bold text-xl'>
-								Nothing to show here!
-							</p>
-						) : (
-							<ScrollArea className='h-80 w-full p-5'>
-								<SkeletonWrapper isLoading={statsQuery.isFetching} fullWidth>
+					<SkeletonWrapper isLoading={statsQuery.isFetching} fullWidth>
+						<Card className='w-full p-4 md:p-5' key={key}>
+							<h3 className='font-mono font-bold text-xl'>{key} By Category</h3>
+							{filteredData[key as TransactionType].items.length <= 0 ? (
+								<p className='text-center my-[15%] font-semibold text-xl'>
+									Nothing to show here!
+								</p>
+							) : (
+								<ScrollArea className='max-h-80 w-full'>
 									{filteredData[key as TransactionType].items.map((item) => (
 										<div className='grid gap-1 mb-4'>
 											<div className='flex items-center justify-between gap-4 text-xs font-mono font-bold'>
@@ -176,10 +182,10 @@ const CategoryStats = ({
 											/>
 										</div>
 									))}
-								</SkeletonWrapper>
-							</ScrollArea>
-						)}
-					</Card>
+								</ScrollArea>
+							)}
+						</Card>
+					</SkeletonWrapper>
 				))}
 		</div>
 	)

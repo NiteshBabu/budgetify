@@ -21,10 +21,9 @@ import {
 import { CURRENCIES } from '@/lib/constants'
 import { cn } from '@/lib/utils'
 import { UserSettings } from '@prisma/client'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import SkeletonWrapper from './SkeletonWrapper'
-
 
 export function CurrencyCombobox() {
 	const [open, setOpen] = React.useState(false)
@@ -47,6 +46,7 @@ export function CurrencyCombobox() {
 			)
 	}, [userSettings.data])
 
+	const queryClient = useQueryClient()
 	const mutation = useMutation({
 		mutationFn: UpdateUserCurrency,
 		onSuccess: (data: UserSettings) => {
@@ -55,6 +55,9 @@ export function CurrencyCombobox() {
 			})
 			setOption(CURRENCIES.find((currency) => currency.code === data.currency)!)
 			setOpen(false)
+			queryClient.invalidateQueries({
+				queryKey: ['user-settings'],
+			})
 		},
 		onError: (e) => toast.error(e.message, { id: 'update-currency' }),
 	})

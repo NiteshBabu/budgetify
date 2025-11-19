@@ -19,16 +19,6 @@ export async function GET(req: Request) {
 			status: 400,
 		})
 	}
-	// const transactions = await prisma.transactions.groupBy({
-	// 	by: 'type',
-	// 	where: {
-	// 		userId: user.id,
-	// 	},
-	//   _sum: {
-	//     amount: true
-	//   }
-	// })
-	// console.log(transactions)
 
 	const stats = await getBalanceStats(
 		user.id,
@@ -55,14 +45,7 @@ async function getBalanceStats(userId: string, from: Date, to: Date) {
 			amount: true,
 		},
 	})
-  console.log({to})
-  console.log(await prisma.transactions.findFirst({
-    where : {
-      date : {
-        gte: from
-      }
-    }
-  }))
+  
 	return {
     expense: totals.find(t => t.type === "expense")?._sum.amount || 0,
     income: totals.find(t => t.type === "income")?._sum.amount || 0

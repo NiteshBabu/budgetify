@@ -19,7 +19,7 @@ function Insight({ userSettings }: Prop) {
 	})
 	return (
 		<div className='grid gap-5 '>
-			<div className='flex justify-between items-center '>
+			<div className='flex justify-between items-center gap-4 flex-wrap'>
 				<h2 className='text-2xl md:text-3xl font-bold font-mono'>Insight</h2>
 				<DateRangePicker
 					initialDateFrom={dateRange.from}
@@ -30,7 +30,6 @@ function Insight({ userSettings }: Prop) {
 						if (!from || !to) return
 						if (differenceInDays(to, from) > MAX_DATE_RANGE)
 							toast.error('Please select date range less than 90 days')
-
 						setDateRange({
 							from,
 							to,

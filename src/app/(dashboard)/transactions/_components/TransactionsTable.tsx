@@ -1,4 +1,4 @@
-import { GetTransactionHistoryResponseType } from '@/app/api/transaction/history/route'
+import { GetTransactionHistoryResponseType } from '@/app/api/transactions/history/route'
 import { DataTableColumnHeader } from '@/components/data-table/column-header'
 import { DataTableViewOptions } from '@/components/data-table/column-toggle'
 import { DataTableFacetedFilter } from '@/components/data-table/faceted-filter'
@@ -6,47 +6,47 @@ import { DataTablePagination } from '@/components/data-table/pagination'
 import SkeletonWrapper from '@/components/SkeletonWrapper'
 import { Button } from '@/components/ui/button'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
 } from '@/components/ui/table'
 import { cn, DateToUTCDate } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import {
-  ColumnDef,
-  ColumnFiltersState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
+	ColumnDef,
+	ColumnFiltersState,
+	flexRender,
+	getCoreRowModel,
+	getFilteredRowModel,
+	getPaginationRowModel,
+	getSortedRowModel,
+	SortingState,
+	useReactTable,
 } from '@tanstack/react-table'
 import { download, generateCsv, mkConfig } from 'export-to-csv'
 import {
-  DownloadIcon,
-  EditIcon,
-  MoreHorizontalIcon,
-  TrashIcon,
+	DownloadIcon,
+	EditIcon,
+	MoreHorizontalIcon,
+	TrashIcon,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import DeleteTransactionPopup from './DeleteTransactionPopup'
 
 interface Props {
-	from: Date
-	to: Date
+	from: string
+	to: string
 }
 
 type TransactionHistoryRow = GetTransactionHistoryResponseType[0]
@@ -133,14 +133,16 @@ const csvConfig = mkConfig({
 function TransactionsTable({ from, to }: Props) {
 	const [sorting, setSorting] = useState<SortingState>([])
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+	const fromDate = new Date(from)
+	const toDate = new Date(to)
 
 	const transactionsQuery = useQuery({
-		queryKey: ['transaction'],
+		queryKey: ['transactions', from, to],
 		queryFn: () =>
 			fetch(
-				`/api/transaction/history?from=${DateToUTCDate(
-					from
-				)}&to=${DateToUTCDate(to)}`
+				`/api/transactions/history?from=${DateToUTCDate(
+					fromDate
+				)}&to=${DateToUTCDate(toDate)}`
 			).then((resp) => resp.json()),
 	})
 
@@ -185,43 +187,53 @@ function TransactionsTable({ from, to }: Props) {
 		return Array.from(uniqueCategories)
 	}, [transactionsQuery.data])
 	return (
-		<>
+		<div className='w-full'>
 			<div className='flex flex-wrap gap-5 mb-5'>
-				{table.getColumn('category') && (
-					<DataTableFacetedFilter
-						title='Category'
-						column={table.getColumn('category')}
-						options={categoryOptions}
-					/>
-				)}
-				{table.getColumn('type') && (
-					<DataTableFacetedFilter
-						title='Type'
-						column={table.getColumn('type')}
-						options={[
-							{ label: 'Income', value: 'income' },
-							{ label: 'Expense', value: 'expense' },
-						]}
-					/>
-				)}
-				<Button
-					variant='outline'
-					onClick={() => {
-						const data = table.getFilteredRowModel().rows.map((row) => ({
-							category: row.original.category,
-							description: row.original.description,
-							amount: row.original.amount,
-							type: row.original.type,
-							date: row.original.date,
-						}))
+				<SkeletonWrapper isLoading={transactionsQuery.isFetching}>
+					{table.getColumn('category') && (
+						<DataTableFacetedFilter
+							title='Category'
+							column={table.getColumn('category')}
+							options={categoryOptions}
+						/>
+					)}
+				</SkeletonWrapper>
+				<SkeletonWrapper isLoading={transactionsQuery.isFetching}>
+					{table.getColumn('type') && (
+						<DataTableFacetedFilter
+							title='Type'
+							column={table.getColumn('type')}
+							options={[
+								{ label: 'Income', value: 'income' },
+								{ label: 'Expense', value: 'expense' },
+							]}
+						/>
+					)}
+				</SkeletonWrapper>
+				<SkeletonWrapper isLoading={transactionsQuery.isFetching}>
+					<Button
+						variant='outline'
+						onClick={() => {
+							const data = table.getFilteredRowModel().rows.map((row) => ({
+								category: row.original.category,
+								description: row.original.description,
+								amount: row.original.amount,
+								type: row.original.type,
+								date: row.original.date,
+							}))
 
-						handleExport(data)
-					}}
-					disabled={table.getFilteredRowModel().rows.length <= 0}>
-					<DownloadIcon />
-					Export
-				</Button>
-				<DataTableViewOptions table={table} />
+							handleExport(data)
+						}}
+						disabled={table.getFilteredRowModel().rows.length <= 0}>
+						<DownloadIcon />
+						Export
+					</Button>
+				</SkeletonWrapper>
+				<div className='ml-auto'>
+					<SkeletonWrapper isLoading={transactionsQuery.isFetching}>
+						<DataTableViewOptions table={table} />
+					</SkeletonWrapper>
+				</div>
 			</div>
 			<div className='overflow-hidden rounded-md border'>
 				<SkeletonWrapper isLoading={transactionsQuery.isFetching} fullWidth>
@@ -274,9 +286,11 @@ function TransactionsTable({ from, to }: Props) {
 				</SkeletonWrapper>
 			</div>
 			<div className='my-5'>
-				<DataTablePagination table={table} />
+				<SkeletonWrapper isLoading={transactionsQuery.isFetching}>
+					<DataTablePagination table={table} />
+				</SkeletonWrapper>
 			</div>
-		</>
+		</div>
 	)
 }
 

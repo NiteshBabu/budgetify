@@ -1,4 +1,3 @@
-import Footer from '@/components/Footer'
 import RootProvider from '@/components/providers/RootProvider'
 import { ClerkProvider } from '@clerk/nextjs'
 import type { Metadata } from 'next'
@@ -38,7 +37,6 @@ export default function RootLayout({
 					className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 					<Toaster richColors position='bottom-right' />
 					<RootProvider>{children}</RootProvider>
-					<Footer />
 				</body>
 			</html>
 		</ClerkProvider>

@@ -49,7 +49,7 @@ async function getHistoryData(
 	timeframe: TimeframeType,
 	period: PeriodType
 ) {
-	let results = []
+	let results: any = []
 	switch (timeframe) {
 		case 'month':
 			let monthHistoryResults = await prisma.monthHistory.groupBy({
@@ -67,6 +67,7 @@ async function getHistoryData(
 				},
 			})
 
+			if (monthHistoryResults.length <= 0) return results
 			for (
 				let i = 0;
 				i < getDaysInMonth(new Date(period.year, period.month));
@@ -105,6 +106,7 @@ async function getHistoryData(
 					month: 'asc',
 				},
 			})
+			if(yearHistoryResults.length <= 0) return results
 			for (let i = 0; i < 12; i++) {
 				let income = 0
 				let expense = 0

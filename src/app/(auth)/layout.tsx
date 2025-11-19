@@ -3,8 +3,8 @@ import React from 'react'
 
 export default function Layout({ children }: { children: React.ReactNode }) {
 	return (
-		<div className='relative h-screen w-full grid place-content-center gap-8'>
-      <Logo />
+		<div className='w-full grid place-content-center justify-items-center h-screen gap-5'>
+			<Logo />
 			{children}
 		</div>
 	)

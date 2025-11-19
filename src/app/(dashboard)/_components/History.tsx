@@ -42,6 +42,7 @@ function History({ userSettings }: Props) {
 				`/api/history-data?timeframe=${timeframe}&month=${period.month}&year=${period.year}`
 			).then((resp) => resp.json()),
 	})
+
 	return (
 		<div className='grid gap-5'>
 			<h2 className='text-2xl md:text-3xl font-bold font-mono'>History</h2>
@@ -68,7 +69,7 @@ function History({ userSettings }: Props) {
 				</CardHeader>
 				<CardContent>
 					<SkeletonWrapper isLoading={historyDataQuery.isFetching}>
-						{historyDataQuery.data ? (
+						{historyDataQuery.data?.length > 0 ? (
 							<ResponsiveContainer width='100%' height={300}>
 								<BarChart
 									height={300}
@@ -168,8 +169,8 @@ function History({ userSettings }: Props) {
 								</BarChart>
 							</ResponsiveContainer>
 						) : (
-							<Card className='flex items-center justify-center h-[300px]'>
-								<CardTitle>No data for the selected period</CardTitle>
+							<Card className='h-[300px] grid gap-2 place-content-center text-center'>
+								<CardTitle className='text-xl'>No data for the selected period</CardTitle>
 								<p>Please change the time period</p>
 							</Card>
 						)}

@@ -9,7 +9,6 @@ import Insight from './_components/Insight'
 
 export default async function Home() {
 	const user = await currentUser()
-
 	if (!user) redirect('/sign-in')
 
 	const userSettings = await prisma.userSettings.findUnique({
@@ -21,7 +20,7 @@ export default async function Home() {
 	if (!userSettings) redirect('/wizard')
 
 	return (
-		<div className='grid gap-5'>
+		<div className='grid gap-10'>
 			<div className='border-b bg-card py-10'>
 				<div className='container mx-auto flex flex-col md:flex-row  justify-between md:items-center gap-5'>
 					<div className=''>

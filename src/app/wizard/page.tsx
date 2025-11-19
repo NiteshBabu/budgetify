@@ -13,11 +13,7 @@ import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
-export default async function Page({
-	children,
-}: Readonly<{
-	children: React.ReactNode
-}>) {
+export default async function Page() {
 	const user = await currentUser()
 
 	if (!user) redirect('/sign-in')
@@ -25,7 +21,7 @@ export default async function Page({
 	return (
 		<div className='container flex flex-col justify-between items-center gap-4'>
 			<h1 className='text-3xl text-center'>
-				Welcome, <span className='font-bold ml-1'>{user.firstName}!</span>
+				Welcome, <span className='font-bold text-colorful'>{user.firstName}!</span>
 			</h1>
 			<h2 className='text-muted-foreground text-base text-center'>
 				Let's get started by setting up your currency here.

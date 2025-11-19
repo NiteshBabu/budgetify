@@ -5,7 +5,7 @@ import { Menu } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import Logo from './Logo'
+import LogoClient from './LogoClient'
 import { ToggleThemeButton } from './ToggleThemeButton'
 import { Button, buttonVariants } from './ui/button'
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
@@ -36,16 +36,16 @@ export const MobileNavbar = () => {
 								<Menu />
 							</Button>
 						</SheetTrigger>
-						<Logo />
+						<LogoClient />
 					</div>
 					<SheetContent
 						className='w-[400px] sm:[540px] flex flex-col py-4'
 						side='left'>
 						<div className='flex border-b pb-4 px-3'>
-							<Logo />
+							<LogoClient />
 						</div>
 						<div className='flex flex-col justify-between h-full'>
-							<ul className='flex gap-4 flex-col items-start font-bold font-mono'>
+							<ul className='flex gap-2 flex-col items-start font-bold font-mono'>
 								{LINKS.map((link, index) => (
 									<LinkItem
 										{...link}
@@ -70,7 +70,7 @@ export const DesktopNavbar = () => {
 		<div className='hidden md:block border-separate bg-background '>
 			<nav className='flex gap-4 justify-between items-center'>
 				<div className='logo py-4'>
-					<Logo />
+					<LogoClient />
 				</div>
 				<ul className='flex gap-5 items-center font-bold font-mono'>
 					{LINKS.map((link, index) => (
@@ -106,7 +106,7 @@ function LinkItem({
 					}),
 					'w-full justify-start px-1 text-lg text-muted-foreground hover:text-foreground relative',
 					isCurrent &&
-						'text-foreground  after:content-[""]  after:absolute after:-bottom-5 after:w-full after:h-0.5 after:bg-emerald-500 after:left-0'
+						'text-foreground  after:content-[""]  after:absolute after:bottom-0 md:after:-bottom-5 after:w-full after:h-0.5 after:bg-lime-500 after:left-0'
 				)}
 				onClick={clickCallback && clickCallback}>
 				{label}

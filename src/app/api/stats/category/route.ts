@@ -19,16 +19,6 @@ export async function GET(req: Request) {
 			status: 400,
 		})
 	}
-	// const transactions = await prisma.transactions.groupBy({
-	// 	by: 'type',
-	// 	where: {
-	// 		userId: user.id,
-	// 	},
-	//   _sum: {
-	//     amount: true
-	//   }
-	// })
-	// console.log(transactions)
 
 	const stats = await getCategoryStats(
 		user.id,

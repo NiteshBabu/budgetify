@@ -8,12 +8,16 @@ import { toast } from 'sonner'
 import TransactionsTable from './_components/TransactionsTable'
 
 export default function Page() {
-	const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
+	const [dateRange, setDateRange] = useState<{
+		from: Date
+		to: Date
+	}>(() => ({
 		from: startOfMonth(new Date()),
 		to: new Date(),
-	})
+	}))
+
 	return (
-		<div className='grid gap-5'>
+		<div className='grid gap-10'>
 			<div className='border-b bg-card'>
 				<div className='container mx-auto flex md:flex-row flex-col md:items-center justify-between gap-5 py-10'>
 					<div className=''>
@@ -46,7 +50,7 @@ export default function Page() {
 				</div>
 			</div>
 			<div className='container mx-auto'>
-				<TransactionsTable from={dateRange.from} to={dateRange.to} />
+				<TransactionsTable from={dateRange.from.toISOString()} to={dateRange.to.toISOString()} />
 			</div>
 		</div>
 	)

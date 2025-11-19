@@ -1,4 +1,4 @@
-import Logo from '@/components/Logo'
+import Logo from "@/components/Logo"
 
 export default function Layout({
 	children,
@@ -6,9 +6,9 @@ export default function Layout({
 	children: React.ReactNode
 }>) {
 	return (
-		<div className='grid place-content-center w-full h-screen gap-5'>
-			{children}
+		<div className='grid place-content-center w-full gap-5 h-screen'>
 			<Logo />
+			{children}
 		</div>
 	)
 }

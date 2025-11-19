@@ -1,6 +1,7 @@
 'use client'
 
 import { CurrencyCombobox } from '@/components/CurrencyCombobox'
+import Logo from '@/components/LogoClient'
 import SkeletonWrapper from '@/components/SkeletonWrapper'
 import { Button } from '@/components/ui/button'
 import {
@@ -19,7 +20,7 @@ import DeleteCategoryPopup from './_components/DeleteCategoryPopup'
 
 function Page() {
 	return (
-		<div className='grid gap-5'>
+		<div className='grid gap-10'>
 			<div className='border-b bg-card'>
 				<div className='container mx-auto flex flex-wrap items-center justify-between gap-5 py-10'>
 					<div className=''>
@@ -33,12 +34,15 @@ function Page() {
 			<div className='container mx-auto flex flex-col gap-4'>
 				<Card>
 					<CardHeader>
-						<CardTitle>Currency</CardTitle>
+						<CardTitle className='flex items-center gap-4 text-xl md:text-3xl font-bold font-mono'>
+							<Logo withoutText />
+							Currency
+						</CardTitle>
 						<CardDescription>
 							Set your default currency setting here for transactions.
 						</CardDescription>
 					</CardHeader>
-					<CardContent>
+					<CardContent className='w-[400px]'>
 						<CurrencyCombobox />
 					</CardContent>
 				</Card>
@@ -70,7 +74,7 @@ const CategoryList = ({ type }: { type: string }) => {
 								<TrendingUpIcon className='h-12 w-12 bg-emerald-400/10 text-emerald-500 p-2 rounded-lg' />
 							)}
 							<div className=''>
-								<h2 className='text-2xl md:text-3xl font-bold font-mono'>
+								<h2 className='text-xl md:text-3xl font-bold font-mono'>
 									{type === 'expense' ? 'Expenses' : 'Incomes'} Categories
 								</h2>
 								<small className='text-muted-foreground'>Sorted By Name</small>

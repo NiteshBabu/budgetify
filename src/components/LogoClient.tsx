@@ -1,5 +1,4 @@
-import { prisma } from '@/lib/prisma'
-import { currentUser } from '@clerk/nextjs/server'
+import { useQuery } from '@tanstack/react-query'
 import {
 	BadgeDollarSignIcon,
 	BadgeEuroIcon,
@@ -8,31 +7,19 @@ import {
 	BadgePoundSterlingIcon,
 } from 'lucide-react'
 import { ReactNode } from 'react'
+import SkeletonWrapper from './SkeletonWrapper'
 
-const Logo = async ({ withoutText }: { withoutText?: boolean }) => {
+const LogoClient = ({ withoutText }: { withoutText?: boolean }) => {
+	const userSettingsQuery = useQuery({
+		queryKey: ['user-settings'],
+		queryFn: () => fetch('/api/user-settings').then((resp) => resp.json()),
+	})
+
 	let logo: ReactNode = (
 		<BadgeDollarSignIcon className=' h-11 w-11 text-lime-500 font-bold' />
 	)
 
-	const user = await currentUser()
-
-	if (!user)
-		return (
-			<div className='flex items-center gap-2'>
-				{logo}
-				<p className='text-colorful font-mono leading-tight tracking-tighter font-bold text-2xl'>
-					Budgetify
-				</p>
-			</div>
-		)
-
-	const userSettings = await prisma.userSettings.findUnique({
-		where: {
-			userId: user.id,
-		},
-	})
-
-	switch (userSettings?.currency) {
+	switch (userSettingsQuery.data?.currency) {
 		case 'JPY':
 			logo = (
 				<BadgeJapaneseYenIcon className=' h-11 w-11 text-lime-500 font-bold' />
@@ -53,11 +40,17 @@ const Logo = async ({ withoutText }: { withoutText?: boolean }) => {
 			break
 	}
 
-	if (withoutText) return logo
-
+	if (withoutText)
+		return (
+			<SkeletonWrapper isLoading={userSettingsQuery.isFetching}>
+				{logo}
+			</SkeletonWrapper>
+		)
 	return (
 		<a href='/' className='flex gap-2 items-center justify-center'>
-			{logo}
+			<SkeletonWrapper isLoading={userSettingsQuery.isLoading}>
+				{logo}
+			</SkeletonWrapper>
 			<p className='text-colorful font-mono leading-tight tracking-tighter font-bold text-2xl'>
 				Budgetify
 			</p>
@@ -65,4 +58,4 @@ const Logo = async ({ withoutText }: { withoutText?: boolean }) => {
 	)
 }
 
-export default Logo
+export default LogoClient
