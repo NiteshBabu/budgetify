@@ -75,12 +75,11 @@ const CategoryPicker = ({ type, onChange }: Props) => {
 									key={cat.name}
 									onSelect={(currentOption) => {
 										setCategory(cat.name)
+										onChange(cat.name)
 										setOpen((lastState) => !lastState)
 									}}>
 									<CategoryRow category={cat} />
-									<Check
-										className={cn(category !== cat.name && 'hidden')}
-									/>
+									<Check className={cn(category !== cat.name && 'hidden')} />
 								</CommandItem>
 							))}
 						</CommandList>
