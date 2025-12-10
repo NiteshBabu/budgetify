@@ -34,3 +34,5 @@ async function getHistoryPeriods(userId: string) {
 
 	return years
 }
+
+export const runtime = 'edge'
