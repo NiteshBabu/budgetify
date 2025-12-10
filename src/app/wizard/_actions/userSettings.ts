@@ -30,4 +30,3 @@ export async function UpdateUserCurrency(currency: {
 	return userSettings
 }
 
-export const runtime = 'edge'
