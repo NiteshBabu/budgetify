@@ -1,11 +1,11 @@
 import { CurrencyCombobox } from '@/components/CurrencyCombobox'
 import { Button } from '@/components/ui/button'
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { currentUser } from '@clerk/nextjs/server'
@@ -55,4 +55,4 @@ export default async function Page() {
 	)
 }
 
-export const runtime = 'edge'
+

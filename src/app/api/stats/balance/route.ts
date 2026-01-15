@@ -52,4 +52,4 @@ async function getBalanceStats(userId: string, from: Date, to: Date) {
   }
 }
 
-export const runtime = 'edge'
+

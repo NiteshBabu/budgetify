@@ -53,4 +53,4 @@ async function getCategoryStats(userId: string, from: Date, to: Date) {
 	return totals
 }
 
-export const runtime = 'edge'
+

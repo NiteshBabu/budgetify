@@ -4,4 +4,4 @@ export default function Page(){
   return <SignIn />
 }
 
-export const runtime = 'edge'
+

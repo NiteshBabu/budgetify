@@ -25,4 +25,4 @@ export async function GET(request: Request) {
 	return Response.json(userSettings)
 }
 
-export const runtime = 'edge'
+

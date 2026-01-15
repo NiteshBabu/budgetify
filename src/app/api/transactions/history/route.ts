@@ -63,4 +63,4 @@ const GetTransactionHistory = async (userId: string, from: Date, to: Date) => {
 	}))
 }
 
-export const runtime = 'edge'
+

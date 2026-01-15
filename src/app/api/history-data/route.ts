@@ -129,4 +129,4 @@ async function getHistoryData(
 	return results
 }
 
-export const runtime = 'edge'
+
