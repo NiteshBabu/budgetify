@@ -24,3 +24,5 @@ export async function GET(request: Request) {
   revalidatePath("/")
 	return Response.json(userSettings)
 }
+
+export const runtime = 'edge'

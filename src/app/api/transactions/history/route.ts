@@ -62,3 +62,5 @@ const GetTransactionHistory = async (userId: string, from: Date, to: Date) => {
 		amount: formatter.format(transaction.amount),
 	}))
 }
+
+export const runtime = 'edge'

@@ -51,3 +51,5 @@ async function getBalanceStats(userId: string, from: Date, to: Date) {
     income: totals.find(t => t.type === "income")?._sum.amount || 0
   }
 }
+
+export const runtime = 'edge'
