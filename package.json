@@ -6,9 +6,7 @@
     "start": "bun run --bun next dev",
     "build": "bun run --bun next build",
     "lint": "bun run --bun biome check",
-    "format": "bun run --bun biome format --write",
-    "postinstall": "prisma generate",
-    "prisma:migrate": "prisma migrate deploy"
+    "format": "bun run --bun biome format --write"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.35.1",
