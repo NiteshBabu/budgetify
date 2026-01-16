@@ -4,14 +4,12 @@ import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
 import './globals.css'
 
-
-
 export const metadata: Metadata = {
 	title: 'Budgetify',
 	description: 'Track your finances, the right way!',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode
@@ -24,8 +22,7 @@ export default function RootLayout({
 				style={{
 					colorScheme: 'dark',
 				}}>
-				<body
-					className={`font-mono antialiased`}>
+				<body className={`font-mono antialiased`}>
 					<Toaster richColors position='bottom-right' />
 					<RootProvider>{children}</RootProvider>
 				</body>
